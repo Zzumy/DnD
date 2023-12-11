@@ -15,13 +15,43 @@ public class Karakter {
         this.szerencse = rnd.nextInt(1, 7) + 6;
     }
 
+    public int getEletero() {
+        return eletero;
+    }
+
+    public int getUgyesseg() {
+        return ugyesseg;
+    }
+
+    public int getSzerencse() {
+        return szerencse;
+    }
+
     public void felvesz(Targy targy) {
         felszereles.add(targy);
     }
 
-    public void felveszTobb(Targy targy, int mennyi) {
-        for (int ix = 0; ix < mennyi; ix++) {
+    public void felvesz(Targy targy, int db) {
+        for (int ix = 0; ix < db; ix++) {
             felszereles.add(targy);
+        }
+    }
+
+    public void hasznal(String targy) {
+        hasznal(targy, 1);
+    }
+
+    public void hasznal(String targy, int db) {
+        hasznal(targy, db, true);
+    }
+
+    public void hasznal(String targy, int db, boolean van) {
+        if (van) {
+            for (int ix = 0; ix < db; ix++) {
+                felszereles.remove(db);
+            }
+        } else {
+            System.out.println("Nincs elegendő" + targy + "a használathoz");
         }
     }
 }
