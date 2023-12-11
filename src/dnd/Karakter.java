@@ -1,11 +1,13 @@
 package dnd;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Karakter {
 
-    private int eletero, ugyesseg, szerencse;
     private Random rnd;
+    private int eletero, ugyesseg, szerencse;
+    ArrayList<String> felszereles;
 
     public Karakter(int eletero, int ugyesseg, int szerencse) {
         this.eletero = (rnd.nextInt(1, 7) * 2) + 12;
