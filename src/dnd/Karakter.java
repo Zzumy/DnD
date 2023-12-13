@@ -1,18 +1,74 @@
 package dnd;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Karakter {
 
-    private Random rnd;
+    private static final Random RND = new Random();
     private int eletero, ugyesseg, szerencse;
-    ArrayList<Targy> felszereles;
+    private ArrayList<Targy> felszereles;
 
-    public Karakter(int eletero, int ugyesseg, int szerencse) {
-        this.eletero = (rnd.nextInt(1, 7) * 2) + 12;
-        this.ugyesseg = rnd.nextInt(1, 7) + 6;
-        this.szerencse = rnd.nextInt(1, 7) + 6;
+    public Karakter() {
+        eletero = kockadobas(2) + 12;
+        ugyesseg = kockadobas() + 6;
+        szerencse = kockadobas() + 6;
+        felszereles = new ArrayList<>();
+    }
+
+    private int kockadobas() {
+        return kockadobas(1);
+    }
+
+    private int kockadobas(int db) {
+        int osszeg = 0;
+        for (int i = 0; i < db; i++) {
+            osszeg += RND.nextInt(1, 6 + 1);
+        }
+        return osszeg;
+    }
+
+    public void felvesz(Targy targy, int db) {
+        for (int i = 0; i < db; i++) {
+            felvesz(targy);
+        }
+    }
+
+    public void felvesz(Targy targy) {
+        felszereles.add(targy);
+    }
+
+    public void hasznal(String targyNev) {
+        hasznal(targyNev, 1);
+    }
+
+    public void hasznal(String targyNev, int db) {
+        hasznal(targyNev, db, true);
+    }
+
+    public void hasznal(String targyNev, int db, boolean hasznalHaKevesebbVan) {
+        List<Integer> targyIndexek = new ArrayList<>();
+
+        for (int i = 0; i < felszereles.size() && targyIndexek.size() < db; i++) {
+            if (felszereles.get(i).getNev().equals(targyNev)) {
+                targyIndexek.add(i);
+            }
+        }
+        int talaltTargyDb = targyIndexek.size();
+
+        if (talaltTargyDb > 0) {
+            if (hasznalHaKevesebbVan || talaltTargyDb == db) {
+                for (int index : targyIndexek) {
+                    felszereles.remove(index);
+                }
+                System.out.printf("%d db %s | Felhasználva!\n", talaltTargyDb, targyNev);
+            } else {
+                System.out.printf("%s | Felhasználás sikertelen! (%d/%d)\n", targyNev, db, talaltTargyDb);
+            }
+        } else {
+            System.out.printf("%d db %s | Nem található!\n", talaltTargyDb, targyNev);
+        }
     }
 
     public int getEletero() {
@@ -27,31 +83,9 @@ public class Karakter {
         return szerencse;
     }
 
-    public void felvesz(Targy targy) {
-        felszereles.add(targy);
+    @Override
+    public String toString() {
+        return String.format("Karakter{eletero=%d, ugyesseg=%d, szerencse=%d, felszerelesek=%s}", eletero, ugyesseg, szerencse, felszereles);
     }
 
-    public void felvesz(Targy targy, int db) {
-        for (int ix = 0; ix < db; ix++) {
-            felszereles.add(targy);
-        }
-    }
-
-    public void hasznal(String targy) {
-        hasznal(targy, 1);
-    }
-
-    public void hasznal(String targy, int db) {
-        hasznal(targy, db, true);
-    }
-
-    public void hasznal(String targy, int db, boolean van) {
-        if (van) {
-            for (int ix = 0; ix < db; ix++) {
-                felszereles.remove(db);
-            }
-        } else {
-            System.out.println("Nincs elegendő" + targy + "a használathoz");
-        }
-    }
 }

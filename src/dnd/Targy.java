@@ -5,12 +5,12 @@ import java.util.UUID;
 public class Targy {
 
     private String nev, leiras;
-    UUID id;
+    private UUID id;
 
-    public Targy(String nev, String leiras, UUID id) {
+    public Targy(String nev, String leiras) {
         this.nev = nev;
         this.leiras = leiras;
-        this.id = id;
+        this.id = UUID.randomUUID();
     }
 
     public String getNev() {
@@ -23,6 +23,11 @@ public class Targy {
 
     public UUID getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Targy{nev='%s', leiras='%s', id=%s}", nev, leiras, id);
     }
 
 }
